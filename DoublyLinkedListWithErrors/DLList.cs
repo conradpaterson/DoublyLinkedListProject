@@ -52,7 +52,14 @@ namespace DoublyLinkedListWithErrors
         {
             if (this.head == null) return;
             this.head = this.head.next;
-            this.head.previous = null;
+            if (this.head != null)
+            {
+                this.head.previous = null;
+            }
+            else
+            {
+                this.tail = null;//Fix:If list is now empty, set tail to null as we
+            }
         } // removeHead
 
         public void removeTail()
@@ -65,7 +72,10 @@ namespace DoublyLinkedListWithErrors
                 return;
             }
             this.tail = this.tail.previous;
-            this.tail.next = null;//Fix:Set the new tail's next pointer to null.
+            if (this.tail != null)//Fix:Check when there may just be one node.
+            {
+                this.tail.next = null;//Fix:Set the new tail's next pointer to null.
+            }
         } 
 
         public DLLNode search(int num)
@@ -88,17 +98,28 @@ namespace DoublyLinkedListWithErrors
             if (p.previous == null)
             {
                 this.head = p.next;
-                if(this.head != null)//Fix:If the new head exists, set it's previous to null.
-                this.head.previous = null;
-                return;
-            }
-            //If removing the tail.
-            else if(p.next == null)
+                if (this.head != null)//Fix:If the new head exists, set it's previous to null.
+                {
+                    this.head.previous = null;
+                    return;
+                }
+                else
+                {
+                    this.tail = null;//Fix:If list becomes empty, update tail.
+                }
+            }           
+            else if(p.next == null)//If removing the tail.
             {
                 this.tail = p.previous;
-                if(this.tail != null)//Fix:If the new tail exists, set it's next to null.
-                    this.tail.next=null;
-                return;
+                if (this.tail != null)//Fix:If the new tail exists, set it's next to null.
+                {
+                    this.tail.next = null;
+                    return;
+                }
+                else
+                {
+                    this.head = null;//Fix:If list becomes empty, update head.
+                }
             }
             //If removing the middle node.
             else
