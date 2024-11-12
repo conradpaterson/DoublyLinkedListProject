@@ -27,8 +27,8 @@ namespace DoublyLinkedListWithErrors
             else
             {
                 tail.next = p;
+                p.previous = tail;//Fix: Set p.previous before changing tail.
                 tail = p;
-                p.previous = tail;
             }
         } // end of addToTail
 
@@ -43,11 +43,12 @@ namespace DoublyLinkedListWithErrors
             {
                 p.next = this.head;
                 this.head.previous = p;
+                p.previous = null;//Fix:Set p.previous to null because it's the new head.
                 head = p;
             }
         } // end of addToHead
 
-        public void removHead()
+        public void removeHead()
         {
             if (this.head == null) return;
             this.head = this.head.next;
@@ -63,18 +64,17 @@ namespace DoublyLinkedListWithErrors
                 this.tail = null;
                 return;
             }
-        } // remove tail
+            this.tail = this.tail.previous;
+            this.tail.next = null;//Fix:Set the new tail's next pointer to null.
+        } 
 
-        /*-------------------------------------------------
-         * Return null if the string does not exist.
-         * ----------------------------------------------*/
         public DLLNode search(int num)
         {
             DLLNode p = head;
             while (p != null)
             {
+                if (p.num == num) break;//Fix:Check before moving to the next node.
                 p = p.next;
-                if (p.num == num) break;
             }
             return (p);
         } // end of search (return pionter to the node);
@@ -82,25 +82,33 @@ namespace DoublyLinkedListWithErrors
         public void removeNode(DLLNode p)
         { // removing the node p.
 
-            if (p.next == null)
-            {
-                this.tail = this.tail.previous;
-                this.tail.next = null;
-                p.previous = null;
-                return;
-            }
+            if (p == null) return;
+            
+            //If removing the head.
             if (p.previous == null)
             {
-                this.head = this.head.next;
-                p.next = null;
+                this.head = p.next;
+                if(this.head != null)//Fix:If the new head exists, set it's previous to null.
                 this.head.previous = null;
                 return;
             }
-            p.next.previous = p.previous;
-            p.previous.next = p.next;
+            //If removing the tail.
+            else if(p.next == null)
+            {
+                this.tail = p.previous;
+                if(this.tail != null)//Fix:If the new tail exists, set it's next to null.
+                    this.tail.next=null;
+                return;
+            }
+            //If removing the middle node.
+            else
+            {
+                p.previous.next = p.next;
+                p.next.previous = p.previous;
+            }
+           //Clean up the node.
             p.next = null;
             p.previous = null;
-            return;
         } // end of remove a node
 
         public int total()
@@ -110,7 +118,7 @@ namespace DoublyLinkedListWithErrors
             while (p != null)
             {
                 tot += p.num;
-                p = p.next.next;
+                p = p.next;//Fix:Move to next node one at a time.
             }
             return (tot);
         } // end of total

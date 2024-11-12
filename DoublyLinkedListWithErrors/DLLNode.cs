@@ -28,7 +28,7 @@ namespace DoublyLinkedListWithErrors
             }
             else
             {
-                for (int i = 2; i < Math.Sqrt(n); i++)
+                for (int i = 2; i <= Math.Sqrt(n); i++)// Middle equation should have =.
                 {
                     if ((n % i) == 0)
                     {
