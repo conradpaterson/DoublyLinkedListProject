@@ -44,6 +44,11 @@ namespace DoublyLinkedListWithErrors
     {
         public static Boolean isPrime(int n)
         {
+            // I'm trying to make a conflict here.
+            // I don't know if these comments will come up
+
+            Boolean a = false;
+
             Boolean b = true;
             if (n < 2)
             {
