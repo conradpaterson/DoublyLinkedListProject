@@ -44,16 +44,28 @@ namespace DoublyLinkedListWithErrors
     {
         public static Boolean isPrime(int n)
         {
-           
+           //Here are some comments to try to make a conflict.
+
+            Boolean a = true;
+            int number = 2;
+
             Boolean b = true;
             if (n < 2)
             {
                 return false;
             }
+
+            if (number > 3)
+            {
+                a = false;
+            }
+
+
             for (int i = 2; i <= Math.Sqrt(n); i++)
             {
                 if (n % i == 0)
-                {
+                { 
+                    a = false;
                     b = false;
                     break;
                 }
